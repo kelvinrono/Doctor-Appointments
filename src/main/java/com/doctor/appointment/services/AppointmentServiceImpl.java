@@ -28,6 +28,7 @@ public class AppointmentServiceImpl implements AppointmentService{
         HashMap<String, String> response = new HashMap<>();
 
         try {
+
             Patient patient = patientRepository.findById(appointment.getPatient()).orElseThrow(()-> new IllegalArgumentException("Id not found!"));
             Doctor doctor = doctorRepository.findById(appointment.getDoctor()).orElseThrow(()-> new IllegalArgumentException("Id not found!"));
             Appointments newAppointment = Appointments.builder()
@@ -38,7 +39,7 @@ public class AppointmentServiceImpl implements AppointmentService{
                     .build();
             appointmentRepository.save(newAppointment);
             log.info("user saved!");
-            response.put("message", "Appointment saved successfully at"+newAppointment.getAppointmentDate());
+            response.put("message", "Appointment saved successfully at "+newAppointment.getAppointmentDate());
             response.put("status", "200");
             return response;
         }
@@ -52,7 +53,14 @@ public class AppointmentServiceImpl implements AppointmentService{
     }
     @Override
     public List<Appointments> doctorAppointments(long id) {
-        return appointmentRepository.findByDoctor_Id(id);
+        try {
+            return appointmentRepository.findByDoctor_Id(id);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            log.info(e.getMessage());
+            return null;
+        }
     }
 
     @Override
