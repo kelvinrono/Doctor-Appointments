@@ -1,7 +1,5 @@
 package com.doctor.appointment.objects;
 
-import com.doctor.appointment.models.Doctor;
-import com.doctor.appointment.models.Patient;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 

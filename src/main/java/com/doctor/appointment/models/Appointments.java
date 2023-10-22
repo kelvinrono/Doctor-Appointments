@@ -23,12 +23,13 @@ public class Appointments {
     private String description;
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(
-            name = "doctor_id"
-    )
-    private Doctor doctor;
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(
             name = "patient_id"
     )
-    private Patient patient;
+    private User patient;
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(
+            name = "doctor_id"
+    )
+    private User doctor;
+
 }

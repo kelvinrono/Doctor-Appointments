@@ -6,16 +6,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
 @Data
-@Table(name = "doctors")
+@Table(name = "users")
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Doctor {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "doctor_id")
@@ -27,5 +24,10 @@ public class Doctor {
     private String email;
     @Column(name = "phone_number")
     private String phoneNumber;
+    @ManyToOne(
+            fetch = FetchType.EAGER
+    )
+    @JoinColumn(name = "role_id")
+    private Roles role;
 }
 

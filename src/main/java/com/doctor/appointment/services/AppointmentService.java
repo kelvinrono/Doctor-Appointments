@@ -7,7 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 
 public interface AppointmentService {
-    List<Appointments> doctorAppointments(long id);
+//    List<Appointments> doctorAppointments(long id);
     List<Appointments> patientAppointments(long id);
+    List<Appointments> doctorAppointment(long id);
     HashMap makeAppointment(AppointmentObject appointment);
 }

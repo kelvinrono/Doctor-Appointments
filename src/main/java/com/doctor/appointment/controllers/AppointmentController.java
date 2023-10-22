@@ -25,7 +25,11 @@ public class AppointmentController {
         return appointmentService.patientAppointments(id);
     }
     @GetMapping("/get-doctor-appointments/{id}")
-    public List<Appointments> doctorsAppointment(@PathVariable("id") long id){
-        return appointmentService.doctorAppointments(id);
+    public List<Appointments> doctorAppointments(@PathVariable("id") long id){
+        return appointmentService.patientAppointments(id);
     }
+//    @GetMapping("/get-doctor-appointments/{id}")
+//    public List<Appointments> doctorsAppointment(@PathVariable("id") long id){
+//        return appointmentService.doctorAppointments(id);
+//    }
 }

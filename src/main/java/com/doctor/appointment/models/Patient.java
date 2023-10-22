@@ -26,5 +26,10 @@ public class Patient {
     private String email;
     @Column(name = "phone_number")
     private String phoneNumber;
+    @ManyToOne(
+            fetch = FetchType.EAGER
+    )
+    @JoinColumn(name = "role_id")
+    private Roles role;
 
 }

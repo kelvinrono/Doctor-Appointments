@@ -1,17 +1,16 @@
 package com.doctor.appointment.services;
 
 import com.doctor.appointment.models.Appointments;
-import com.doctor.appointment.models.Doctor;
+import com.doctor.appointment.models.User;
 import com.doctor.appointment.models.Patient;
 import com.doctor.appointment.objects.AppointmentObject;
 import com.doctor.appointment.repositories.AppointmentRepository;
-import com.doctor.appointment.repositories.DoctorRepository;
+import com.doctor.appointment.repositories.UserRepository;
 import com.doctor.appointment.repositories.PatientRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.sql.PreparedStatement;
 import java.util.HashMap;
 import java.util.List;
 
@@ -20,7 +19,7 @@ import java.util.List;
 @Slf4j
 public class AppointmentServiceImpl implements AppointmentService{
     private final AppointmentRepository appointmentRepository;
-    private final DoctorRepository doctorRepository;
+    private final UserRepository userRepository;
     private final PatientRepository patientRepository;
 
     @Override
@@ -29,8 +28,8 @@ public class AppointmentServiceImpl implements AppointmentService{
 
         try {
 
-            Patient patient = patientRepository.findById(appointment.getPatient()).orElseThrow(()-> new IllegalArgumentException("Id not found!"));
-            Doctor doctor = doctorRepository.findById(appointment.getDoctor()).orElseThrow(()-> new IllegalArgumentException("Id not found!"));
+            User patient = userRepository.findById(appointment.getPatient()).orElseThrow(()-> new IllegalArgumentException("User does not exist"));
+            User doctor = userRepository.findById(appointment.getDoctor()).orElseThrow(()-> new IllegalArgumentException("User does not exist"));
             Appointments newAppointment = Appointments.builder()
                     .appointmentDate(appointment.getAppointmentDate())
                     .description(appointment.getDescription())
@@ -51,10 +50,13 @@ public class AppointmentServiceImpl implements AppointmentService{
         }
 
     }
+
+
     @Override
-    public List<Appointments> doctorAppointments(long id) {
+    public List<Appointments> patientAppointments(long id) {
         try {
-            return appointmentRepository.findByDoctor_Id(id);
+            log.info("..Querying patient information...");
+            return appointmentRepository.findByPatient_Id(id);
         }
         catch (Exception e){
             e.printStackTrace();
@@ -64,8 +66,8 @@ public class AppointmentServiceImpl implements AppointmentService{
     }
 
     @Override
-    public List<Appointments> patientAppointments(long id) {
-        return appointmentRepository.findByPatient_Id(id);
+    public List<Appointments> doctorAppointment(long id) {
+        return appointmentRepository.findByDoctor_Id(id);
     }
 
 }
