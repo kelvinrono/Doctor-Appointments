@@ -32,5 +32,9 @@ public class UserController {
     public User getPatient(@PathVariable("id") long id){
         return userService.getUser(id);
     }
+    @PostMapping("/login-user")
+    public HashMap login(@RequestBody UserObject userObject){
+            return userService.loginUser(userObject);
+    }
 
 }

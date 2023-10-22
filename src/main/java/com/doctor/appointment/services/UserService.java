@@ -11,5 +11,6 @@ public interface UserService {
     List<User> getAllDoctors(String roleName);
     User getUser(long id);
     List<User> getAllPatients(String roleName);
+    HashMap loginUser(UserObject user);
 
 }

@@ -7,10 +7,12 @@ import com.doctor.appointment.repositories.UserRepository;
 import com.doctor.appointment.repositories.RoleRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @AllArgsConstructor
@@ -19,9 +21,12 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
     @Override
     public HashMap saveUser(UserObject user) {
         HashMap<String, String> response = new HashMap<>();
+        String password = passwordEncoder.encode(user.getPassword());
+
         try {
             User existingUser = userRepository.findByEmail(user.getEmail());
             Optional<Roles> role = roleRepository.findById(user.getRole());
@@ -41,6 +46,7 @@ public class UserServiceImpl implements UserService {
                     .lastName(user.getLastName())
                     .phoneNumber(user.getPhoneNumber())
                     .role(role.get())
+                    .password(password)
                     .build();
             userRepository.save(newUser);
 
@@ -57,11 +63,36 @@ public class UserServiceImpl implements UserService {
         }
 
     }
+    @Override
+    public HashMap loginUser(UserObject user){
+        HashMap<String, Object> response = new HashMap<>();
+
+        try {
+            User existingUser = userRepository.findByEmail(user.getEmail());
+
+            if(existingUser==null){
+                response.put("message", "User does not exist");
+                return response;
+            }
+            if(passwordEncoder.matches(user.getPassword(), existingUser.getPassword())){
+                response.put("message", "User login in successful.");
+                response.put("status", 200);
+            }
+            else {
+                response.put("message", "Invalid credentials.");
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
+            response.put("message", "Invalid credentials");
+        }
+        return response;
+
+    }
 
     @Override
     public List<User> getAllDoctors(String role) {
-        List<User> doctors = userRepository.findByRole_Name(role);
-        return doctors;
+        return userRepository.findByRole_Name(role);
     }
 
     @Override

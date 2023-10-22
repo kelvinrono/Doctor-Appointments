@@ -11,4 +11,5 @@ public class UserObject {
     private String email;
     private String phoneNumber;
     private long role;
+    private String password;
 }
